@@ -283,7 +283,7 @@ class Command(BaseCommand):
         skipped = 0
         excluded = 0
 
-        manifest_path = project_dir / "generate.json"
+        manifest_path = views_dir / "generate.json"
         manifest = self.load_manifest(manifest_path)
 
         for graph in graphs:
