@@ -338,11 +338,9 @@ def _date_node_value(max_length):
     # becomes z.string().regex, not z.iso) describes arches' real output: an
     # optional time, space or T separator, optional offset.
     return {
-        "nullable": True,
-        "pattern": (
-            r"^\d{4}-\d{2}-\d{2}" r"([ T]\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2}|Z)?)?$"
-        ),
         "type": "string",
+        "nullable": True,
+        "pattern": r"^\d{4}-\d{2}-\d{2}([ T]\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2}|Z)?)?$",
     }
 
 
