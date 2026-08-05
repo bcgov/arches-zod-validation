@@ -21,6 +21,8 @@ def resource_aliased_data_component(graph_slug, exclude_children=False):
     """Component name a graph's resource-level aliased_data is registered under.
     Callers that $ref it by string must go through this, or a rename here leaves
     them pointing at nothing."""
+    if not graph_slug:
+        raise ValueError("graph_slug is required to name a resource aliased_data component")
     kind = (
         "resource_top_nodegroups_aliased_data"
         if exclude_children
