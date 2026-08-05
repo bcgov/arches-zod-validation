@@ -87,6 +87,22 @@ def view_bases(verbs):
     return list_base, detail_base
 
 
+def view_methods(verbs):
+    """Django http_method_names literals for the (collection, detail) views.
+
+    A base class binds whatever its mixins provide -- RetrieveUpdateAPIView
+    serves PUT as well as PATCH, and DRF has no PATCH-only generic -- so an
+    undeclared verb would otherwise be served, and documented, regardless.
+    """
+    verbs = {verb.lower() for verb in verbs}
+
+    def literal(candidates):
+        allowed = [verb for verb in candidates if verb in verbs] + ["head", "options"]
+        return "[" + ", ".join(f'"{verb}"' for verb in allowed) + "]"
+
+    return literal(("get", "post")), literal(("get", "put", "patch", "delete"))
+
+
 def normalize_path_prefix(value):
     """Normalize a user-supplied URL prefix to Django path() form.
 
@@ -307,6 +323,7 @@ class Command(BaseCommand):
                 continue
             class_prefix = slug_to_class_prefix(slug)
             list_base, detail_base = view_bases(verbs)
+            list_methods, detail_methods = view_methods(verbs)
             entries.append(
                 {
                     "module_name": slug,
@@ -335,6 +352,8 @@ class Command(BaseCommand):
                     "verbs": verbs,
                     "list_base": list_base,
                     "detail_base": detail_base,
+                    "list_methods": list_methods,
+                    "detail_methods": detail_methods,
                 },
             )
             self.write(module_path, content, dry_run)
