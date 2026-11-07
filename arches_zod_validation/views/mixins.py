@@ -15,6 +15,13 @@ class BCAPResourceSerializer(ArchesResourceSerializer):
     Meta.graph_slug. Re-declares get_graph_has_different_publication only to
     annotate its bool return type for the OpenAPI generator."""
 
+    def _find_graph_nodes(self):
+        return (
+            super()
+            ._find_graph_nodes()
+            .order_by("nodegroup__cardmodel__sortorder", "pk")
+        )
+
     @extend_schema_field(bool)
     def get_graph_has_different_publication(self, obj):
         return super().get_graph_has_different_publication(obj)
