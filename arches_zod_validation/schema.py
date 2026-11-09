@@ -78,8 +78,7 @@ def sort_generated_schema_properties(result, generator, request, public):
 
 
 def strip_aliased_node_data_titles(result, generator, request, public):
-    """Hook: remove node-specific titles from shared AliasedNodeData components.
-    """
+    """Hook: remove node-specific titles from shared AliasedNodeData components."""
     for name, schema in result.get("components", {}).get("schemas", {}).items():
         if "AliasedNodeData" in name:
             schema.pop("title", None)
