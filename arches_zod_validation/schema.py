@@ -6,7 +6,7 @@ from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from drf_spectacular.openapi import AutoSchema
 from rest_framework import serializers
 
-from arches.app.models.models import Node
+from arches.app.models.models import CardModel, Node
 
 from arches_querysets.rest_framework.field_mixins import NodeValueMixin
 from arches_querysets.rest_framework.serializers import (
@@ -61,6 +61,14 @@ def sort_generated_schema_properties(result, generator, request, public):
         Node.objects.exclude(alias=None)
         .order_by("alias", "sortorder")
         .values_list("alias", "sortorder")
+    )
+    # Make order deterministic for drift check
+    card_so = dict(CardModel.objects.values_list("nodegroup_id", "sortorder"))
+    sortorder.update(
+        (alias, card_so[pk])
+        for alias, pk in Node.objects.filter(pk__in=card_so)
+        .exclude(alias=None)
+        .values_list("alias", "pk")
     )
     for schema in result.get("components", {}).get("schemas", {}).values():
         _sort_properties_in_place(schema, sortorder)
