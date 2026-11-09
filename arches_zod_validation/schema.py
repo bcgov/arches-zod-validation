@@ -77,6 +77,16 @@ def sort_generated_schema_properties(result, generator, request, public):
     return result
 
 
+def strip_aliased_node_data_titles(result, generator, request, public):
+    """Hook: remove node-specific titles from shared AliasedNodeData components.
+    """
+    for name, schema in result.get("components", {}).get("schemas", {}).items():
+        if "AliasedNodeData" in name:
+            schema.pop("title", None)
+            schema.get("properties", {}).get("node_value", {}).pop("title", None)
+    return result
+
+
 def _name_schema():
     # Resource name: an I18n_String serialized to its localized value.
     return {"type": "string", "readOnly": True, "nullable": True}
