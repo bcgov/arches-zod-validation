@@ -28,7 +28,7 @@ dependencies = [
     "drf-spectacular==0.29.0",
     "faker",
 ]
-version = "0.0.1"
+version = "0.1.0"
 
 [dependency-groups]
 dev = [

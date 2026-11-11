@@ -6,7 +6,7 @@ from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from drf_spectacular.openapi import AutoSchema
 from rest_framework import serializers
 
-from arches.app.models.models import Node
+from arches.app.models.models import CardModel, Node
 
 from arches_querysets.rest_framework.field_mixins import NodeValueMixin
 from arches_querysets.rest_framework.serializers import (
@@ -22,7 +22,9 @@ def resource_aliased_data_component(graph_slug, exclude_children=False):
     Callers that $ref it by string must go through this, or a rename here leaves
     them pointing at nothing."""
     if not graph_slug:
-        raise ValueError("graph_slug is required to name a resource aliased_data component")
+        raise ValueError(
+            "graph_slug is required to name a resource aliased_data component"
+        )
     kind = (
         "resource_top_nodegroups_aliased_data"
         if exclude_children
@@ -62,8 +64,25 @@ def sort_generated_schema_properties(result, generator, request, public):
         .order_by("alias", "sortorder")
         .values_list("alias", "sortorder")
     )
+    # Make order deterministic for drift check
+    card_so = dict(CardModel.objects.values_list("nodegroup_id", "sortorder"))
+    sortorder.update(
+        (alias, card_so[pk])
+        for alias, pk in Node.objects.filter(pk__in=card_so)
+        .exclude(alias=None)
+        .values_list("alias", "pk")
+    )
     for schema in result.get("components", {}).get("schemas", {}).values():
         _sort_properties_in_place(schema, sortorder)
+    return result
+
+
+def strip_aliased_node_data_titles(result, generator, request, public):
+    """Hook: remove node-specific titles from shared AliasedNodeData components."""
+    for name, schema in result.get("components", {}).get("schemas", {}).items():
+        if "AliasedNodeData" in name:
+            schema.pop("title", None)
+            schema.get("properties", {}).get("node_value", {}).pop("title", None)
     return result
 
 

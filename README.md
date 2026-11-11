@@ -49,7 +49,32 @@ REST_FRAMEWORK = {
     # merge with whatever you already have
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My Project API",
+    "DESCRIPTION": "My Project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_URLCONF": "bcrhp.urls_api_documented",
+    "SCHEMA_PATH_PREFIX": "/bcrhp",
+    "POSTPROCESSING_HOOKS": [
+        "drf_spectacular.hooks.postprocess_schema_enums",
+        "arches_zod_validation.schema.sort_generated_schema_properties",
+        "arches_zod_validation.schema.strip_aliased_node_data_titles",
+        "arches_zod_validation.schema.type_base_serializer_fields",
+    ],
+}
 ```
+
+Key settings:
+
+- **`SERVE_URLCONF`** — the urlconf spectacular documents. Set this to `<project>.urls_api_documented` (the file scaffolded by `bootstrap_api`), not the project's main `urls.py`. This keeps the documented API surface separate from internal routes.
+- **`SCHEMA_PATH_PREFIX`** — pin this to the context root of your API (e.g. `"/bcrhp"`). Without it, drf-spectacular estimates the prefix dynamically from the registered routes, which can change as routes are added or removed and cause spurious renames in the generated Zod types.
+- **`POSTPROCESSING_HOOKS`** — the three `arches_zod_validation.schema` hooks are required for correct Zod output:
+  - `sort_generated_schema_properties` — orders tile-schema properties by node sortorder for stable diffs between regenerations.
+  - `strip_aliased_node_data_titles` — removes node-specific titles from shared `AliasedNodeData` components so they remain generic across graphs.
+  - `type_base_serializer_fields` — types the Arches base-serializer fields (`name`, `descriptors`, `provisional_edits`) that drf-spectacular cannot infer automatically.
+  - `drf_spectacular.hooks.postprocess_schema_enums` is the drf-spectacular default enum hook; include it alongside the arches ones.
 
 Without `DEFAULT_SCHEMA_CLASS`, the `spectacular` command runs but introspects views with DRF's legacy generator and produces a near-empty spec. The app ships a system check that reports both misconfigurations explicitly at startup.
 
