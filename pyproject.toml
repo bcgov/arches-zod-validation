@@ -35,4 +35,4 @@ dynamic = []
 [tool.setuptools.packages.find]
 
 [dependency-groups]
-dev = [ "black==26.10.1", "coverage", "django-silk==5.1.0", "livereload", "pre-commit==4.7.0", "sst",]
+dev = [ "black==26.10.1", "coverage", "django-silk==5.6.0", "livereload", "pre-commit==4.7.0", "sst",]
