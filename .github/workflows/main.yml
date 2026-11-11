@@ -25,16 +25,16 @@ jobs:
         python-version: ["3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           check-latest: true
 
       - name: Checkout into target branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.event.pull_request.base.ref }}
@@ -66,16 +66,16 @@ jobs:
         python-version: ["3.12", "3.13"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           check-latest: true
 
       - name: Checkout into feature branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
@@ -92,16 +92,16 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.x' # Use the latest available version
           check-latest: true
 
       - name: Download feature branch frontend coverage report artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: feature-branch-frontend-coverage-report
           path: .
@@ -156,7 +156,7 @@ jobs:
 
       - name: Download target branch frontend coverage report artifact
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: target-branch-frontend-coverage-report
           path: .
@@ -237,22 +237,22 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.x' # Use the latest available version
           check-latest: true
 
       - name: Download feature branch Python coverage report artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: feature-branch-python-coverage-report
           path: .
 
       - name: Download target branch Python coverage report artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: target-branch-python-coverage-report
           path: .
