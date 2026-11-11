@@ -1,5 +1,5 @@
 // datatypes/number/validation/zod.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Generic "numeric" datatype schema for Arches-style values.
@@ -9,7 +9,7 @@ import { z } from 'zod';
  */
 const FiniteNumberSchema = z
     .number()
-    .refine(Number.isFinite, { message: 'Expected a finite number' });
+    .refine(Number.isFinite, { message: "Expected a finite number" });
 
 export const NumberValueSchema = z.object({
     display_value: z.string(),

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const CollectionItemSchema = z.object({
     key: z.string(),
@@ -17,5 +17,5 @@ export const ConceptValueSchema = z.object({
 });
 
 export const ConceptValueRequiredSchema = ConceptValueSchema.safeExtend({
-    node_value: z.uuidv4().min(1, { message: 'Value is required.' }),
+    node_value: z.uuidv4().min(1, { message: "Value is required." }),
 });

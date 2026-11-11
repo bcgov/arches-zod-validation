@@ -19,18 +19,20 @@
         "openapi:zod": "openapi-ts"
     },
     "dependencies": {
-        "arches": "bcgov/arches#stable/8.0.10_bcgov",
+        "arches": "bcgov/arches#stable/8.1.2_bcgov_12776",
+        "arches-vue-components": "archesproject/arches-vue-components#2.0.3",
+        "geojson": "^0.5.0",
         "zod": "^4.1.5"
     },
     "devDependencies": {
-        "arches-dev-dependencies": "archesproject/arches-dev-dependencies#stable/8.0.102"
+        "@types/geojson": "^7946.0.16",
+        "arches-dev-dependencies": "archesproject/arches-dev-dependencies#stable/8.0.10"
     },
-    "nodeModulesPaths": {
-    },
+    "nodeModulesPaths": {},
     "overrides": {
         "moment-timezone": "^0.5.45",
         "nomnom": "npm:@gerhobbelt/nomnom",
-        "rimraf": "^5.0.7", 
+        "rimraf": "^5.0.7",
         "underscore": "^1.13.6"
     }
 }

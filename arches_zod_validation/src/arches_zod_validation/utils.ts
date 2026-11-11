@@ -1,14 +1,14 @@
-import type { Ref } from 'vue';
-import type { LanguageValue } from '@/arches_component_lab/datatypes/string/types.ts';
-import type { GeoJSONFeatureCollectionValue } from '@/arches_component_lab/datatypes/geojson-feature-collection/types.ts';
-import type { AliasedNodeData } from '@/arches_component_lab/types.ts';
-import type { FormInstance } from '@primevue/forms';
-import type { GenericZodObjectType } from '@/arches_zod_validation/validation-utils.ts';
+import type { Ref } from "vue";
+import type { LanguageValue } from "@/arches_vue_components/datatypes/string/types.ts";
+import type { GeoJSONFeatureCollectionAliasedNodeData } from "@/arches_vue_components/datatypes/geojson-feature-collection/types.ts";
+import type { AliasedNodeData } from "@/arches_vue_components/types.ts";
+import type { FormInstance } from "@primevue/forms";
+import type { GenericZodObjectType } from "@/arches_zod_validation/validation-utils.ts";
 
 export const blankStringValue = function () {
     return {
-        display_value: '',
-        node_value: { en: { value: '', direction: 'ltr' } } as Record<
+        display_value: "",
+        node_value: { en: { value: "", direction: "ltr" } } as Record<
             string,
             LanguageValue
         >,
@@ -18,7 +18,7 @@ export const blankStringValue = function () {
 
 export const blankResourceInstanceValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: null,
         details: [],
     };
@@ -26,7 +26,7 @@ export const blankResourceInstanceValue = function () {
 
 export const blankResourceInstanceListValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: [],
         details: [],
     };
@@ -34,7 +34,7 @@ export const blankResourceInstanceListValue = function () {
 
 export const blankDateValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: null,
         details: [] as never[],
     };
@@ -42,7 +42,7 @@ export const blankDateValue = function () {
 
 export const blankBooleanValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: null,
         details: [] as never[],
     };
@@ -50,7 +50,7 @@ export const blankBooleanValue = function () {
 
 export const blankFileListValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: [],
         details: [] as never[],
     };
@@ -58,10 +58,10 @@ export const blankFileListValue = function () {
 
 export const blankURLValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: {
-            url: '',
-            url_label: '',
+            url: "",
+            url_label: "",
         },
         details: [],
     };
@@ -69,7 +69,7 @@ export const blankURLValue = function () {
 
 export const blankNumberValue = function () {
     return {
-        display_value: '',
+        display_value: "",
         node_value: null,
         details: [],
     };
@@ -77,7 +77,7 @@ export const blankNumberValue = function () {
 
 export const trueBooleanValue = function () {
     return {
-        display_value: 'true',
+        display_value: "true",
         node_value: true,
         details: [],
     };
@@ -85,24 +85,25 @@ export const trueBooleanValue = function () {
 
 export const falseBooleanValue = function () {
     return {
-        display_value: 'false',
+        display_value: "false",
         node_value: false,
         details: [],
     };
 };
 
-export const blankGeoJSONValue = function (): GeoJSONFeatureCollectionValue {
-    return {
-        display_value: '',
-        node_value: null,
-        details: [] as never[],
-    } satisfies GeoJSONFeatureCollectionValue;
-};
+export const blankGeoJSONValue =
+    function (): GeoJSONFeatureCollectionAliasedNodeData {
+        return {
+            display_value: "",
+            node_value: null,
+            details: [] as never[],
+        } satisfies GeoJSONFeatureCollectionAliasedNodeData;
+    };
 
 export const currentDateValue = function () {
     return {
-        display_value: '',
-        node_value: new Date().toISOString().split('T')[0],
+        display_value: "",
+        node_value: new Date().toISOString().split("T")[0],
         details: [] as never[],
     };
 };
@@ -128,10 +129,10 @@ export const isValid = (
 export const updateModelValue = async function (
     newValue: AliasedNodeData,
     attribute_name: string,
-    dataObject: Record<string, any>,
+    dataObject: Record<string, unknown>,
     form: Ref<FormInstance>,
 ) {
-    console.log('updateModelValue', attribute_name, newValue);
+    console.log("updateModelValue", attribute_name, newValue);
     if (dataObject[attribute_name] === newValue) return;
     const result = await form.value.validate(attribute_name);
     if (result?.errors?.[attribute_name]?.length ?? 0 > 0) {

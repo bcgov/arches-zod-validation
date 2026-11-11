@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_target_branch:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -48,7 +48,7 @@ jobs:
           branch-type: 'target'
 
   build_feature_branch:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
           branch-type: 'feature'
 
   check_frontend_coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
       - uses: actions/checkout@v4
@@ -234,7 +234,7 @@ jobs:
           fi
 
   check_python_coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
       - uses: actions/checkout@v4
