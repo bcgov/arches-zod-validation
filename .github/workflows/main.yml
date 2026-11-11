@@ -25,7 +25,7 @@ jobs:
         python-version: ["3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -34,7 +34,7 @@ jobs:
           check-latest: true
 
       - name: Checkout into target branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.event.pull_request.base.ref }}
@@ -66,7 +66,7 @@ jobs:
         python-version: ["3.12", "3.13"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -75,7 +75,7 @@ jobs:
           check-latest: true
 
       - name: Checkout into feature branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -237,7 +237,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [build_feature_branch, build_target_branch]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
