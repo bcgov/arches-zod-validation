@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import { MimeType } from '@/arches_zod_validation/datatypes/file-list/validation/constants.ts';
+import { z } from "zod";
+import { MimeType } from "@/arches_zod_validation/datatypes/file-list/validation/constants.ts";
 
 const blobUrlFormat = z
     .string()
     .regex(
         /^blob:https?:\/\/[a-zA-Z0-9.-]+(?::\d+)?\/[0-9a-fA-F-]{36}$/,
-        'Invalid blob URL format',
+        "Invalid blob URL format",
     )
     .nullish();
 

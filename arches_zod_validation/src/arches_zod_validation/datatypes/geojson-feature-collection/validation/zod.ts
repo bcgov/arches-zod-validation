@@ -1,34 +1,34 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const GeoJSONPositionSchema = z
     .array(z.number())
     .refine((arr: number[]) => arr.length >= 2 && arr.length <= 4, {
         message:
-            'Position must have 2-4 coordinates (longitude, latitude, [altitude], [m])',
+            "Position must have 2-4 coordinates (longitude, latitude, [altitude], [m])",
     });
 
 export const GeoJSONGeometryTypeSchema = z.enum([
-    'Point',
-    'LineString',
-    'Polygon',
-    'MultiPoint',
-    'MultiLineString',
-    'MultiPolygon',
-    'GeometryCollection',
+    "Point",
+    "LineString",
+    "Polygon",
+    "MultiPoint",
+    "MultiLineString",
+    "MultiPolygon",
+    "GeometryCollection",
 ]);
 
 export const PointGeometrySchema = z.object({
-    type: z.literal('Point'),
+    type: z.literal("Point"),
     coordinates: GeoJSONPositionSchema,
 });
 
 export const LineStringGeometrySchema = z.object({
-    type: z.literal('LineString'),
+    type: z.literal("LineString"),
     coordinates: z.array(GeoJSONPositionSchema).min(2),
 });
 
 export const PolygonGeometrySchema = z.object({
-    type: z.literal('Polygon'),
+    type: z.literal("Polygon"),
     coordinates: z
         .array(
             // Each ring is an array of positions
@@ -38,7 +38,7 @@ export const PolygonGeometrySchema = z.object({
                     (ring: Array<number[]>) => ring.length >= 4, // First and last positions are the same
                     {
                         message:
-                            'Polygon rings must have at least 4 positions (first and last positions are equal)',
+                            "Polygon rings must have at least 4 positions (first and last positions are equal)",
                     },
                 )
                 .refine(
@@ -47,7 +47,7 @@ export const PolygonGeometrySchema = z.object({
                         JSON.stringify(ring[ring.length - 1]),
                     {
                         message:
-                            'First and last positions in a polygon ring must be the same',
+                            "First and last positions in a polygon ring must be the same",
                     },
                 ),
         )
@@ -55,24 +55,24 @@ export const PolygonGeometrySchema = z.object({
 });
 
 export const MultiPointGeometrySchema = z.object({
-    type: z.literal('MultiPoint'),
+    type: z.literal("MultiPoint"),
     coordinates: z.array(GeoJSONPositionSchema),
 });
 
 export const MultiLineStringGeometrySchema = z.object({
-    type: z.literal('MultiLineString'),
+    type: z.literal("MultiLineString"),
     coordinates: z.array(z.array(GeoJSONPositionSchema).min(2)),
 });
 
 export const MultiPolygonGeometrySchema = z.object({
-    type: z.literal('MultiPolygon'),
+    type: z.literal("MultiPolygon"),
     coordinates: z.array(
         z
             .array(
                 z
                     .array(GeoJSONPositionSchema)
                     .refine((ring: Array<number[]>) => ring.length >= 4, {
-                        message: 'Polygon rings must have at least 4 positions',
+                        message: "Polygon rings must have at least 4 positions",
                     })
                     .refine(
                         (ring: Array<number[]>) =>
@@ -80,7 +80,7 @@ export const MultiPolygonGeometrySchema = z.object({
                             JSON.stringify(ring[ring.length - 1]),
                         {
                             message:
-                                'First and last positions in a polygon ring must be the same',
+                                "First and last positions in a polygon ring must be the same",
                         },
                     ),
             )
@@ -88,7 +88,7 @@ export const MultiPolygonGeometrySchema = z.object({
     ),
 });
 
-const GeoJSONGeometrySchema = z.discriminatedUnion('type', [
+const GeoJSONGeometrySchema = z.discriminatedUnion("type", [
     PointGeometrySchema,
     LineStringGeometrySchema,
     PolygonGeometrySchema,
@@ -98,7 +98,7 @@ const GeoJSONGeometrySchema = z.discriminatedUnion('type', [
 ]);
 
 export const GeometryCollectionSchema = z.object({
-    type: z.literal('GeometryCollection'),
+    type: z.literal("GeometryCollection"),
     geometries: z.array(GeoJSONGeometrySchema),
 });
 
@@ -108,7 +108,7 @@ const GeoJSONGeometryWithCollectionSchema = z.union([
 ]);
 
 export const GeoJSONFeatureSchema = z.object({
-    type: z.literal('Feature'),
+    type: z.literal("Feature"),
     geometry: GeoJSONGeometryWithCollectionSchema.nullable(),
     properties: z.record(z.string(), z.any()).nullable(),
     id: z.union([z.string(), z.number()]).optional(),
@@ -117,7 +117,7 @@ export const GeoJSONFeatureSchema = z.object({
 export type GeoJSONFeature = ReturnType<typeof GeoJSONFeatureSchema.parse>;
 
 export const GeoJSONFeatureCollectionSchema = z.object({
-    type: z.literal('FeatureCollection'),
+    type: z.literal("FeatureCollection"),
     features: z.array(GeoJSONFeatureSchema),
     bbox: z.array(z.number()).optional(),
 });
@@ -139,11 +139,11 @@ export type GeoJSONFeatureCollectionValue = ReturnType<
 export const validateFeatureCollection = (data: unknown) => {
     try {
         const result = GeoJSONFeatureCollectionSchema.parse(data);
-        console.log('Valid FeatureCollection:', result.type);
-        console.log('Features count:', result.features.length);
+        console.log("Valid FeatureCollection:", result.type);
+        console.log("Features count:", result.features.length);
         return { valid: true, data: result };
     } catch (error) {
-        console.error('Invalid FeatureCollection:', error);
+        console.error("Invalid FeatureCollection:", error);
         return { valid: false, error };
     }
 };
@@ -159,10 +159,10 @@ export const NonEmptyPointGeometrySchema = PointGeometrySchema.extend({
         (coords: Array<number>) =>
             coords.length >= 2 &&
             coords.every(
-                (coord: number) => typeof coord === 'number' && !isNaN(coord),
+                (coord: number) => typeof coord === "number" && !isNaN(coord),
             ),
         {
-            message: 'Point must have valid numeric coordinates',
+            message: "Point must have valid numeric coordinates",
         },
     ),
 });
@@ -192,7 +192,7 @@ export const NonEmptyLineStringGeometrySchema = LineStringGeometrySchema.extend(
                 },
                 {
                     message:
-                        'LineString must contain at least two distinct positions (non-zero length)',
+                        "LineString must contain at least two distinct positions (non-zero length)",
                 },
             ),
     },
@@ -210,7 +210,7 @@ export const NonEmptyPolygonGeometrySchema = PolygonGeometrySchema.extend({
             z
                 .array(GeoJSONPositionSchema)
                 .refine((ring: Array<number[]>) => ring.length >= 4, {
-                    message: 'Polygon rings must have at least 4 positions',
+                    message: "Polygon rings must have at least 4 positions",
                 })
                 .refine(
                     (ring: Array<number[]>) =>
@@ -218,7 +218,7 @@ export const NonEmptyPolygonGeometrySchema = PolygonGeometrySchema.extend({
                         JSON.stringify(ring[ring.length - 1]),
                     {
                         message:
-                            'First and last positions in a polygon ring must be the same',
+                            "First and last positions in a polygon ring must be the same",
                     },
                 )
                 .refine(
@@ -235,7 +235,7 @@ export const NonEmptyPolygonGeometrySchema = PolygonGeometrySchema.extend({
                     },
                     {
                         message:
-                            'Polygon must have non-zero area (at least 3 distinct vertices)',
+                            "Polygon must have non-zero area (at least 3 distinct vertices)",
                     },
                 ),
         )
@@ -272,30 +272,30 @@ export const FeatureCollectionWithNonEmptyPointsSchema =
         features: z
             .array(GeoJSONFeatureSchema)
             .refine((features: GeoJSONFeature[]) => features.length > 0, {
-                message: 'Feature collection must contain at least one feature',
+                message: "Feature collection must contain at least one feature",
             })
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.some(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type === 'Point',
+                            feature.geometry?.type === "Point",
                     ),
                 {
                     message:
-                        'Feature collection must contain at least one Point feature',
+                        "Feature collection must contain at least one Point feature",
                 },
             )
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.every(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type !== 'Point' ||
+                            feature.geometry?.type !== "Point" ||
                             NonEmptyPointGeometrySchema.safeParse(
                                 feature.geometry,
                             ).success,
                     ),
                 {
-                    message: 'All Point geometries must be non-empty',
+                    message: "All Point geometries must be non-empty",
                 },
             ),
     });
@@ -309,30 +309,30 @@ export const FeatureCollectionWithNonEmptyLinesSchema =
         features: z
             .array(GeoJSONFeatureSchema)
             .refine((features: GeoJSONFeature[]) => features.length > 0, {
-                message: 'Feature collection must contain at least one feature',
+                message: "Feature collection must contain at least one feature",
             })
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.some(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type === 'LineString',
+                            feature.geometry?.type === "LineString",
                     ),
                 {
                     message:
-                        'Feature collection must contain at least one LineString feature',
+                        "Feature collection must contain at least one LineString feature",
                 },
             )
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.every(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type !== 'LineString' ||
+                            feature.geometry?.type !== "LineString" ||
                             NonEmptyLineStringGeometrySchema.safeParse(
                                 feature.geometry,
                             ).success,
                     ),
                 {
-                    message: 'All LineString geometries must be non-empty',
+                    message: "All LineString geometries must be non-empty",
                 },
             ),
     });
@@ -346,30 +346,30 @@ export const FeatureCollectionWithNonEmptyPolygonsSchema =
         features: z
             .array(GeoJSONFeatureSchema)
             .refine((features: GeoJSONFeature[]) => features.length > 0, {
-                message: 'Feature collection must contain at least one feature',
+                message: "Feature collection must contain at least one feature",
             })
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.some(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type === 'Polygon',
+                            feature.geometry?.type === "Polygon",
                     ),
                 {
                     message:
-                        'Feature collection must contain at least one Polygon feature',
+                        "Feature collection must contain at least one Polygon feature",
                 },
             )
             .refine(
                 (features: GeoJSONFeature[]) =>
                     features.every(
                         (feature: GeoJSONFeature) =>
-                            feature.geometry?.type !== 'Polygon' ||
+                            feature.geometry?.type !== "Polygon" ||
                             NonEmptyPolygonGeometrySchema.safeParse(
                                 feature.geometry,
                             ).success,
                     ),
                 {
-                    message: 'All Polygon geometries must be non-empty',
+                    message: "All Polygon geometries must be non-empty",
                 },
             ),
     });
@@ -383,7 +383,7 @@ export const FeatureCollectionWithNonEmptyGeometriesSchema =
         features: z
             .array(GeoJSONFeatureSchema)
             .refine((features: GeoJSONFeature[]) => features.length > 0, {
-                message: 'Feature collection must contain at least one feature',
+                message: "Feature collection must contain at least one feature",
             })
             .refine(
                 (features: GeoJSONFeature[]) =>
@@ -392,7 +392,7 @@ export const FeatureCollectionWithNonEmptyGeometriesSchema =
                     ),
                 {
                     message:
-                        'Feature collection must contain at least one feature with geometry',
+                        "Feature collection must contain at least one feature with geometry",
                 },
             )
             .refine(
@@ -400,22 +400,22 @@ export const FeatureCollectionWithNonEmptyGeometriesSchema =
                     features.every(
                         (feature: GeoJSONFeature) =>
                             feature.geometry === null ||
-                            (feature.geometry.type === 'Point'
+                            (feature.geometry.type === "Point"
                                 ? NonEmptyPointGeometrySchema.safeParse(
                                       feature.geometry,
                                   ).success
-                                : feature.geometry.type === 'LineString'
+                                : feature.geometry.type === "LineString"
                                   ? NonEmptyLineStringGeometrySchema.safeParse(
                                         feature.geometry,
                                     ).success
-                                  : feature.geometry.type === 'Polygon'
+                                  : feature.geometry.type === "Polygon"
                                     ? NonEmptyPolygonGeometrySchema.safeParse(
                                           feature.geometry,
                                       ).success
                                     : true),
                     ),
                 {
-                    message: 'All geometries must be non-empty',
+                    message: "All geometries must be non-empty",
                 },
             ),
     });

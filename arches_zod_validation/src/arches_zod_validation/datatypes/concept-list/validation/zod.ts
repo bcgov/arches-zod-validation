@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { CollectionItemSchema } from '@/arches_zod_validation/datatypes/concept/validation/zod.ts';
+import { z } from "zod";
+import { CollectionItemSchema } from "@/arches_zod_validation/datatypes/concept/validation/zod.ts";
 
 export const ConceptListValueSchema = z.object({
     display_value: z.string(),
@@ -11,7 +11,7 @@ export const ConceptListValueRequiredSchema = ConceptListValueSchema.safeExtend(
     {
         node_value: z
             .array(z.uuidv4())
-            .min(1, { message: 'At least one option is required.' }),
+            .min(1, { message: "At least one option is required." }),
     },
 );
 
@@ -30,7 +30,7 @@ export function getConceptListValueRequiredSchema(maxLength: number = 0) {
     return ConceptListValueRequiredSchema.safeExtend({
         node_value: z
             .array(z.uuidv4())
-            .min(1, { message: 'At least one option is required.' })
+            .min(1, { message: "At least one option is required." })
             .max(maxLength, {
                 message: `Maximum number of options is ${maxLength}.`,
             }),

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const ResourceInstanceReferenceSchema = z.object({
     resourceId: z.uuidv4(),

@@ -1,15 +1,15 @@
-import type { AliasedTileDataWithAudit } from '@/bcgov_arches_common/types.ts';
-import type { FileListValue } from '@/arches_component_lab/datatypes/file-list/types.ts';
-import arches from 'arches';
+import type { AliasedTileDataWithAudit } from "@/bcgov_arches_common/types.ts";
+import type { FileListValue } from "@/arches_component_lab/datatypes/file-list/types.ts";
+import arches from "arches";
 
 export const formatFilenameUrl = (
     row: AliasedTileDataWithAudit,
     fieldName: string,
 ): string => {
     const imageData = row?.aliased_data?.[fieldName] as FileListValue;
-    return (imageData?.node_value?.length ?? 0 > 0)
+    return imageData?.node_value?.length ?? 0 > 0
         ? `<a href="${getFileUrl(imageData?.node_value[0].url)}" target="${imageData.node_value[0].file_id}">${imageData.node_value[0].name}</a>`
-        : '';
+        : "";
 };
 
 // This ensures that file URLs include any URL prefix when behind a reverse proxy
@@ -24,5 +24,5 @@ export const getFileUrl = (originalUrl: string) => {
     ) {
         return originalUrl;
     }
-    return (arches.urls.url_subpath + originalUrl).replace('//', '/');
+    return (arches.urls.url_subpath + originalUrl).replace("//", "/");
 };

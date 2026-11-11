@@ -1,7 +1,7 @@
 import type {
     FileListValue,
     FileReference as CoreFileReference,
-} from '@/arches_component_lab/datatypes/file-list/types.ts';
+} from "@/arches_component_lab/datatypes/file-list/types.ts";
 
 export type FileWithContext = File & CoreFileReference;
 

@@ -1,5 +1,5 @@
 // geojson-feature-collection.zod.test.ts
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
     GeoJSONFeatureCollectionSchema,
     GeoJSONFeatureCollectionValueSchema,
@@ -23,25 +23,25 @@ import {
     FeatureCollectionWithNonEmptyLinesSchema,
     FeatureCollectionWithNonEmptyPolygonsSchema,
     FeatureCollectionWithNonEmptyGeometriesSchema,
-} from '@/bcgov_arches_common/datatypes/geojson-feature-collection/validation/zod'; // adjust the import path as needed
+} from "@/bcgov_arches_common/datatypes/geojson-feature-collection/validation/zod"; // adjust the import path as needed
 
 // Any other imports you might need (like Jest or testing libraries)
 
-describe('GeoJSON Feature Collection Schemas', () => {
+describe("GeoJSON Feature Collection Schemas", () => {
     // Valid test cases
-    describe('Valid schemas', () => {
-        it('should validate a feature collection with a point feature', () => {
+    describe("Valid schemas", () => {
+        it("should validate a feature collection with a point feature", () => {
             const validFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
                         properties: {
-                            name: 'San Francisco',
+                            name: "San Francisco",
                         },
                     },
                 ],
@@ -53,37 +53,37 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a feature collection with multiple geometry types', () => {
+        it("should validate a feature collection with multiple geometry types", () => {
             const validFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
                         properties: {
-                            name: 'Point Feature',
+                            name: "Point Feature",
                         },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'LineString',
+                            type: "LineString",
                             coordinates: [
                                 [-122.4194, 37.7749],
                                 [-123.4194, 38.7749],
                             ],
                         },
                         properties: {
-                            name: 'LineString Feature',
+                            name: "LineString Feature",
                         },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Polygon',
+                            type: "Polygon",
                             coordinates: [
                                 [
                                     [-122.4194, 37.7749],
@@ -95,7 +95,7 @@ describe('GeoJSON Feature Collection Schemas', () => {
                             ],
                         },
                         properties: {
-                            name: 'Polygon Feature',
+                            name: "Polygon Feature",
                         },
                     },
                 ],
@@ -108,15 +108,15 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a feature collection with a null geometry', () => {
+        it("should validate a feature collection with a null geometry", () => {
             const validFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: null,
                         properties: {
-                            name: 'Feature with null geometry',
+                            name: "Feature with null geometry",
                         },
                     },
                 ],
@@ -128,20 +128,20 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a GeoJSONFeatureCollectionValue', () => {
+        it("should validate a GeoJSONFeatureCollectionValue", () => {
             const validFeatureCollectionValue = {
-                display_value: 'Test Feature Collection',
+                display_value: "Test Feature Collection",
                 node_value: {
-                    type: 'FeatureCollection',
+                    type: "FeatureCollection",
                     features: [
                         {
-                            type: 'Feature',
+                            type: "Feature",
                             geometry: {
-                                type: 'Point',
+                                type: "Point",
                                 coordinates: [-122.4194, 37.7749],
                             },
                             properties: {
-                                name: 'San Francisco',
+                                name: "San Francisco",
                             },
                         },
                     ],
@@ -155,9 +155,9 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a GeoJSONFeatureCollectionValue with null node_value', () => {
+        it("should validate a GeoJSONFeatureCollectionValue with null node_value", () => {
             const validFeatureCollectionValue = {
-                display_value: 'Empty Feature Collection',
+                display_value: "Empty Feature Collection",
                 node_value: null,
                 details: [],
             };
@@ -170,10 +170,10 @@ describe('GeoJSON Feature Collection Schemas', () => {
     });
 
     // Invalid test cases
-    describe('Invalid schemas', () => {
-        it('should reject a feature collection with wrong type', () => {
+    describe("Invalid schemas", () => {
+        it("should reject a feature collection with wrong type", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollectionInvalid', // Wrong type
+                type: "FeatureCollectionInvalid", // Wrong type
                 features: [],
             };
 
@@ -183,10 +183,10 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a feature collection with invalid features array', () => {
+        it("should reject a feature collection with invalid features array", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollection',
-                features: 'not an array', // Should be an array
+                type: "FeatureCollection",
+                features: "not an array", // Should be an array
             };
 
             const result = GeoJSONFeatureCollectionSchema.safeParse(
@@ -195,14 +195,14 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a feature with wrong geometry type', () => {
+        it("should reject a feature with wrong geometry type", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'InvalidGeometry', // Invalid geometry type
+                            type: "InvalidGeometry", // Invalid geometry type
                             coordinates: [-122.4194, 37.7749],
                         },
                         properties: {},
@@ -216,14 +216,14 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a polygon with non-closed ring', () => {
+        it("should reject a polygon with non-closed ring", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Polygon',
+                            type: "Polygon",
                             coordinates: [
                                 [
                                     [-122.4194, 37.7749],
@@ -245,14 +245,14 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a line string with fewer than 2 positions', () => {
+        it("should reject a line string with fewer than 2 positions", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'LineString',
+                            type: "LineString",
                             coordinates: [
                                 [-122.4194, 37.7749],
                                 // Needs at least 2 positions
@@ -269,14 +269,14 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a position with invalid coordinates', () => {
+        it("should reject a position with invalid coordinates", () => {
             const invalidFeatureCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194], // Missing latitude
                         },
                         properties: {},
@@ -290,9 +290,9 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a feature collection value with invalid structure', () => {
+        it("should reject a feature collection value with invalid structure", () => {
             const invalidFeatureCollectionValue = {
-                display_value: 'Test Feature Collection',
+                display_value: "Test Feature Collection",
                 node_value: {
                     // Missing required 'type' field
                     features: [],
@@ -308,10 +308,10 @@ describe('GeoJSON Feature Collection Schemas', () => {
     });
 
     // Individual schemas test cases
-    describe('Individual schema components', () => {
-        it('should validate a Point geometry', () => {
+    describe("Individual schema components", () => {
+        it("should validate a Point geometry", () => {
             const validPoint = {
-                type: 'Point',
+                type: "Point",
                 coordinates: [-122.4194, 37.7749],
             };
 
@@ -319,9 +319,9 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a LineString geometry', () => {
+        it("should validate a LineString geometry", () => {
             const validLineString = {
-                type: 'LineString',
+                type: "LineString",
                 coordinates: [
                     [-122.4194, 37.7749],
                     [-123.4194, 38.7749],
@@ -332,9 +332,9 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a Polygon geometry', () => {
+        it("should validate a Polygon geometry", () => {
             const validPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     [
                         [-122.4194, 37.7749],
@@ -350,15 +350,15 @@ describe('GeoJSON Feature Collection Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a Feature', () => {
+        it("should validate a Feature", () => {
             const validFeature = {
-                type: 'Feature',
+                type: "Feature",
                 geometry: {
-                    type: 'Point',
+                    type: "Point",
                     coordinates: [-122.4194, 37.7749],
                 },
                 properties: {
-                    name: 'San Francisco',
+                    name: "San Francisco",
                 },
             };
 
@@ -370,12 +370,12 @@ describe('GeoJSON Feature Collection Schemas', () => {
 
 // Additional tests for non-empty geometry schemas
 
-describe('Non-Empty Geometry Schemas', () => {
+describe("Non-Empty Geometry Schemas", () => {
     // Non-Empty Point Tests
-    describe('NonEmptyPointGeometrySchema', () => {
-        it('should validate a valid point geometry', () => {
+    describe("NonEmptyPointGeometrySchema", () => {
+        it("should validate a valid point geometry", () => {
             const validPoint = {
-                type: 'Point',
+                type: "Point",
                 coordinates: [-122.4194, 37.7749],
             };
 
@@ -383,9 +383,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a point with altitude', () => {
+        it("should validate a point with altitude", () => {
             const validPoint = {
-                type: 'Point',
+                type: "Point",
                 coordinates: [-122.4194, 37.7749, 12.5],
             };
 
@@ -393,9 +393,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should reject a point with NaN coordinates', () => {
+        it("should reject a point with NaN coordinates", () => {
             const invalidPoint = {
-                type: 'Point',
+                type: "Point",
                 coordinates: [-122.4194, NaN],
             };
 
@@ -403,10 +403,10 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a point with non-numeric coordinates', () => {
+        it("should reject a point with non-numeric coordinates", () => {
             const invalidPoint = {
-                type: 'Point',
-                coordinates: [-122.4194, '37.7749'],
+                type: "Point",
+                coordinates: [-122.4194, "37.7749"],
             };
 
             const result = NonEmptyPointGeometrySchema.safeParse(invalidPoint);
@@ -415,10 +415,10 @@ describe('Non-Empty Geometry Schemas', () => {
     });
 
     // Non-Empty LineString Tests
-    describe('NonEmptyLineStringGeometrySchema', () => {
-        it('should validate a valid linestring with distinct positions', () => {
+    describe("NonEmptyLineStringGeometrySchema", () => {
+        it("should validate a valid linestring with distinct positions", () => {
             const validLine = {
-                type: 'LineString',
+                type: "LineString",
                 coordinates: [
                     [-122.4194, 37.7749],
                     [-123.4194, 38.7749],
@@ -430,9 +430,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a linestring with multiple points', () => {
+        it("should validate a linestring with multiple points", () => {
             const validLine = {
-                type: 'LineString',
+                type: "LineString",
                 coordinates: [
                     [-122.4194, 37.7749],
                     [-123.4194, 38.7749],
@@ -445,9 +445,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should reject a linestring with only duplicate positions (zero length)', () => {
+        it("should reject a linestring with only duplicate positions (zero length)", () => {
             const invalidLine = {
-                type: 'LineString',
+                type: "LineString",
                 coordinates: [
                     [-122.4194, 37.7749],
                     [-122.4194, 37.7749],
@@ -459,9 +459,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a linestring with fewer than 2 positions', () => {
+        it("should reject a linestring with fewer than 2 positions", () => {
             const invalidLine = {
-                type: 'LineString',
+                type: "LineString",
                 coordinates: [[-122.4194, 37.7749]],
             };
 
@@ -472,10 +472,10 @@ describe('Non-Empty Geometry Schemas', () => {
     });
 
     // Non-Empty Polygon Tests
-    describe('NonEmptyPolygonGeometrySchema', () => {
-        it('should validate a valid polygon with area', () => {
+    describe("NonEmptyPolygonGeometrySchema", () => {
+        it("should validate a valid polygon with area", () => {
             const validPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     [
                         [-122.4194, 37.7749],
@@ -491,9 +491,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a polygon with holes', () => {
+        it("should validate a polygon with holes", () => {
             const validPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     // Outer ring
                     [
@@ -519,9 +519,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should reject a polygon with duplicate vertices (zero area)', () => {
+        it("should reject a polygon with duplicate vertices (zero area)", () => {
             const invalidPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     [
                         [-122.4194, 37.7749],
@@ -537,9 +537,9 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a polygon with collinear points (zero area)', () => {
+        it("should reject a polygon with collinear points (zero area)", () => {
             const invalidPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     [
                         [-122.4194, 37.7749],
@@ -558,13 +558,13 @@ describe('Non-Empty Geometry Schemas', () => {
                 expect(result.success).toBe(false);
             } else {
                 // Skip this test if your implementation doesn't check for collinearity
-                console.warn('Note: Collinear polygon test not enforced');
+                console.warn("Note: Collinear polygon test not enforced");
             }
         });
 
-        it('should reject a polygon without a closed ring', () => {
+        it("should reject a polygon without a closed ring", () => {
             const invalidPolygon = {
-                type: 'Polygon',
+                type: "Polygon",
                 coordinates: [
                     [
                         [-122.4194, 37.7749],
@@ -582,15 +582,15 @@ describe('Non-Empty Geometry Schemas', () => {
     });
 
     // Feature with non-empty geometry tests
-    describe('Feature with Non-Empty Geometry Schemas', () => {
-        it('should validate a feature with non-empty point', () => {
+    describe("Feature with Non-Empty Geometry Schemas", () => {
+        it("should validate a feature with non-empty point", () => {
             const validFeature = {
-                type: 'Feature',
+                type: "Feature",
                 geometry: {
-                    type: 'Point',
+                    type: "Point",
                     coordinates: [-122.4194, 37.7749],
                 },
-                properties: { name: 'Valid Point' },
+                properties: { name: "Valid Point" },
             };
 
             const result =
@@ -598,17 +598,17 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a feature with non-empty linestring', () => {
+        it("should validate a feature with non-empty linestring", () => {
             const validFeature = {
-                type: 'Feature',
+                type: "Feature",
                 geometry: {
-                    type: 'LineString',
+                    type: "LineString",
                     coordinates: [
                         [-122.4194, 37.7749],
                         [-123.4194, 38.7749],
                     ],
                 },
-                properties: { name: 'Valid LineString' },
+                properties: { name: "Valid LineString" },
             };
 
             const result =
@@ -616,11 +616,11 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a feature with non-empty polygon', () => {
+        it("should validate a feature with non-empty polygon", () => {
             const validFeature = {
-                type: 'Feature',
+                type: "Feature",
                 geometry: {
-                    type: 'Polygon',
+                    type: "Polygon",
                     coordinates: [
                         [
                             [-122.4194, 37.7749],
@@ -630,7 +630,7 @@ describe('Non-Empty Geometry Schemas', () => {
                         ],
                     ],
                 },
-                properties: { name: 'Valid Polygon' },
+                properties: { name: "Valid Polygon" },
             };
 
             const result =
@@ -638,14 +638,14 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should reject a feature with empty point', () => {
+        it("should reject a feature with empty point", () => {
             const invalidFeature = {
-                type: 'Feature',
+                type: "Feature",
                 geometry: {
-                    type: 'Point',
+                    type: "Point",
                     coordinates: [-122.4194, NaN],
                 },
-                properties: { name: 'Invalid Point' },
+                properties: { name: "Invalid Point" },
             };
 
             const result =
@@ -655,26 +655,26 @@ describe('Non-Empty Geometry Schemas', () => {
     });
 
     // Feature Collection tests
-    describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
-        it('should validate a feature collection with non-empty points', () => {
+    describe("FeatureCollection with Non-Empty Geometries Schemas", () => {
+        it("should validate a feature collection with non-empty points", () => {
             const validCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
-                        properties: { name: 'Valid Point 1' },
+                        properties: { name: "Valid Point 1" },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-123.4194, 38.7749],
                         },
-                        properties: { name: 'Valid Point 2' },
+                        properties: { name: "Valid Point 2" },
                     },
                 ],
             };
@@ -686,33 +686,33 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should validate a feature collection with mixed geometries', () => {
+        it("should validate a feature collection with mixed geometries", () => {
             const validCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
-                        properties: { name: 'Valid Point' },
+                        properties: { name: "Valid Point" },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'LineString',
+                            type: "LineString",
                             coordinates: [
                                 [-122.4194, 37.7749],
                                 [-123.4194, 38.7749],
                             ],
                         },
-                        properties: { name: 'Valid LineString' },
+                        properties: { name: "Valid LineString" },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Polygon',
+                            type: "Polygon",
                             coordinates: [
                                 [
                                     [-122.4194, 37.7749],
@@ -722,7 +722,7 @@ describe('Non-Empty Geometry Schemas', () => {
                                 ],
                             ],
                         },
-                        properties: { name: 'Valid Polygon' },
+                        properties: { name: "Valid Polygon" },
                     },
                 ],
             };
@@ -734,25 +734,25 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(true);
         });
 
-        it('should reject a feature collection with empty points', () => {
+        it("should reject a feature collection with empty points", () => {
             const invalidCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
-                        properties: { name: 'Valid Point' },
+                        properties: { name: "Valid Point" },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-123.4194, NaN],
                         },
-                        properties: { name: 'Invalid Point' },
+                        properties: { name: "Invalid Point" },
                     },
                 ],
             };
@@ -764,21 +764,21 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a feature collection with empty lines', () => {
+        it("should reject a feature collection with empty lines", () => {
             const invalidCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'LineString',
+                            type: "LineString",
                             coordinates: [
                                 [-122.4194, 37.7749],
                                 [-122.4194, 37.7749],
                             ],
                         },
                         properties: {
-                            name: 'Invalid LineString - zero length',
+                            name: "Invalid LineString - zero length",
                         },
                     },
                 ],
@@ -791,14 +791,14 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should reject a feature collection with empty polygons', () => {
+        it("should reject a feature collection with empty polygons", () => {
             const invalidCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Polygon',
+                            type: "Polygon",
                             coordinates: [
                                 [
                                     [-122.4194, 37.7749],
@@ -808,7 +808,7 @@ describe('Non-Empty Geometry Schemas', () => {
                                 ],
                             ],
                         },
-                        properties: { name: 'Invalid Polygon - zero area' },
+                        properties: { name: "Invalid Polygon - zero area" },
                     },
                 ],
             };
@@ -820,22 +820,22 @@ describe('Non-Empty Geometry Schemas', () => {
             expect(result.success).toBe(false);
         });
 
-        it('should allow non-geometry features in collections', () => {
+        it("should allow non-geometry features in collections", () => {
             const validCollection = {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: null,
-                        properties: { name: 'Feature with null geometry' },
+                        properties: { name: "Feature with null geometry" },
                     },
                     {
-                        type: 'Feature',
+                        type: "Feature",
                         geometry: {
-                            type: 'Point',
+                            type: "Point",
                             coordinates: [-122.4194, 37.7749],
                         },
-                        properties: { name: 'Valid Point' },
+                        properties: { name: "Valid Point" },
                     },
                 ],
             };
@@ -851,11 +851,11 @@ describe('Non-Empty Geometry Schemas', () => {
 
 // Updated tests for the non-empty feature collection schemas
 
-describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
+describe("FeatureCollection with Non-Empty Geometries Schemas", () => {
     // Test for empty feature collection (should fail all non-empty schemas)
-    it('should reject an empty feature collection for all non-empty schemas', () => {
+    it("should reject an empty feature collection for all non-empty schemas", () => {
         const emptyCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [],
         };
 
@@ -883,25 +883,25 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for collection with features but no points (should fail points schema)
-    it('should reject a feature collection without any points for the points schema', () => {
+    it("should reject a feature collection without any points for the points schema", () => {
         const noPointsCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'LineString',
+                        type: "LineString",
                         coordinates: [
                             [-122.4194, 37.7749],
                             [-123.4194, 38.7749],
                         ],
                     },
-                    properties: { name: 'Valid LineString' },
+                    properties: { name: "Valid LineString" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Polygon',
+                        type: "Polygon",
                         coordinates: [
                             [
                                 [-122.4194, 37.7749],
@@ -911,7 +911,7 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
                             ],
                         ],
                     },
-                    properties: { name: 'Valid Polygon' },
+                    properties: { name: "Valid Polygon" },
                 },
             ],
         };
@@ -924,22 +924,22 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for collection with features but no lines (should fail lines schema)
-    it('should reject a feature collection without any lines for the lines schema', () => {
+    it("should reject a feature collection without any lines for the lines schema", () => {
         const noLinesCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-122.4194, 37.7749],
                     },
-                    properties: { name: 'Valid Point' },
+                    properties: { name: "Valid Point" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Polygon',
+                        type: "Polygon",
                         coordinates: [
                             [
                                 [-122.4194, 37.7749],
@@ -949,7 +949,7 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
                             ],
                         ],
                     },
-                    properties: { name: 'Valid Polygon' },
+                    properties: { name: "Valid Polygon" },
                 },
             ],
         };
@@ -962,28 +962,28 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for collection with features but no polygons (should fail polygons schema)
-    it('should reject a feature collection without any polygons for the polygons schema', () => {
+    it("should reject a feature collection without any polygons for the polygons schema", () => {
         const noPolygonsCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-122.4194, 37.7749],
                     },
-                    properties: { name: 'Valid Point' },
+                    properties: { name: "Valid Point" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'LineString',
+                        type: "LineString",
                         coordinates: [
                             [-122.4194, 37.7749],
                             [-123.4194, 38.7749],
                         ],
                     },
-                    properties: { name: 'Valid LineString' },
+                    properties: { name: "Valid LineString" },
                 },
             ],
         };
@@ -996,25 +996,25 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for valid collections (with appropriate geometry types)
-    it('should validate a feature collection with non-empty points', () => {
+    it("should validate a feature collection with non-empty points", () => {
         const validPointsCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-122.4194, 37.7749],
                     },
-                    properties: { name: 'Valid Point 1' },
+                    properties: { name: "Valid Point 1" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-123.4194, 38.7749],
                     },
-                    properties: { name: 'Valid Point 2' },
+                    properties: { name: "Valid Point 2" },
                 },
             ],
         };
@@ -1025,32 +1025,32 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
         expect(result.success).toBe(true);
     });
 
-    it('should validate a feature collection with non-empty lines', () => {
+    it("should validate a feature collection with non-empty lines", () => {
         const validLinesCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'LineString',
+                        type: "LineString",
                         coordinates: [
                             [-122.4194, 37.7749],
                             [-123.4194, 38.7749],
                         ],
                     },
-                    properties: { name: 'Valid LineString 1' },
+                    properties: { name: "Valid LineString 1" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'LineString',
+                        type: "LineString",
                         coordinates: [
                             [-124.4194, 39.7749],
                             [-125.4194, 40.7749],
                             [-126.4194, 41.7749],
                         ],
                     },
-                    properties: { name: 'Valid LineString 2' },
+                    properties: { name: "Valid LineString 2" },
                 },
             ],
         };
@@ -1062,14 +1062,14 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
         expect(result.success).toBe(true);
     });
 
-    it('should validate a feature collection with non-empty polygons', () => {
+    it("should validate a feature collection with non-empty polygons", () => {
         const validPolygonsCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Polygon',
+                        type: "Polygon",
                         coordinates: [
                             [
                                 [-122.4194, 37.7749],
@@ -1079,7 +1079,7 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
                             ],
                         ],
                     },
-                    properties: { name: 'Valid Polygon' },
+                    properties: { name: "Valid Polygon" },
                 },
             ],
         };
@@ -1091,22 +1091,22 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for mixed types (should pass if required type is present)
-    it('should validate a feature collection with mixed types if required type is present', () => {
+    it("should validate a feature collection with mixed types if required type is present", () => {
         const mixedWithPolygonCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-122.4194, 37.7749],
                     },
-                    properties: { name: 'Valid Point' },
+                    properties: { name: "Valid Point" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Polygon',
+                        type: "Polygon",
                         coordinates: [
                             [
                                 [-122.4194, 37.7749],
@@ -1116,7 +1116,7 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
                             ],
                         ],
                     },
-                    properties: { name: 'Valid Polygon' },
+                    properties: { name: "Valid Polygon" },
                 },
             ],
         };
@@ -1135,14 +1135,14 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Test for collection with invalid geometries
-    it('should reject a feature collection with the right type but empty geometries', () => {
+    it("should reject a feature collection with the right type but empty geometries", () => {
         const emptyPolygonsCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Polygon',
+                        type: "Polygon",
                         coordinates: [
                             [
                                 [-122.4194, 37.7749],
@@ -1152,7 +1152,7 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
                             ],
                         ],
                     },
-                    properties: { name: 'Invalid Polygon - zero area' },
+                    properties: { name: "Invalid Polygon - zero area" },
                 },
             ],
         };
@@ -1164,24 +1164,24 @@ describe('FeatureCollection with Non-Empty Geometries Schemas', () => {
     });
 
     // Update the all geometries test if needed
-    it('should validate feature collection with at least one valid non-empty geometry', () => {
+    it("should validate feature collection with at least one valid non-empty geometry", () => {
         // This test should be updated based on how you implement FeatureCollectionWithNonEmptyGeometriesSchema
         // Either requiring at least one geometry of any type, or at least one of each type
         const validMixedCollection = {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: {
-                        type: 'Point',
+                        type: "Point",
                         coordinates: [-122.4194, 37.7749],
                     },
-                    properties: { name: 'Valid Point' },
+                    properties: { name: "Valid Point" },
                 },
                 {
-                    type: 'Feature',
+                    type: "Feature",
                     geometry: null,
-                    properties: { name: 'Feature with null geometry' },
+                    properties: { name: "Feature with null geometry" },
                 },
             ],
         };

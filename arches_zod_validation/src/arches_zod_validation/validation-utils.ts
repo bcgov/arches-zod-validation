@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 export type GenericZodObjectType = typeof z.object;
 export type FieldError = { type?: string; message: string };
@@ -17,7 +17,7 @@ function collapseFieldNames(
     const out: Record<string, FieldError[]> = {};
 
     for (const [path, errs] of Object.entries(nestedErrors)) {
-        const top = path.split('.')[0]; // "project_name"
+        const top = path.split(".")[0]; // "project_name"
 
         if (!errs?.length) continue;
         if (!out[top]) out[top] = [];
