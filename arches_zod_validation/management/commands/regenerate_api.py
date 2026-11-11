@@ -65,8 +65,7 @@ class Command(BaseCommand):
             "--urlconf",
             default=None,
             help=(
-                "Urlconf for spectacular "
-                "(default: <project>.urls_api_documented)."
+                "Urlconf for spectacular " "(default: <project>.urls_api_documented)."
             ),
         )
         parser.add_argument(
