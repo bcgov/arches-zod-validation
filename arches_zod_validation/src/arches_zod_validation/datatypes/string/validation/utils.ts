@@ -1,6 +1,6 @@
-import type { StringValue } from "@/arches_component_lab/datatypes/string/types.ts";
+import type { StringAliasedNodeData } from "@/arches_vue_components/datatypes/string/types.ts";
 
-export function convertNbspToSpaces(stringValue: StringValue) {
+export function convertNbspToSpaces(stringValue: StringAliasedNodeData) {
     if (!stringValue) return stringValue;
     const val = stringValue;
     Object.keys(val.node_value as object).forEach((lang) => {

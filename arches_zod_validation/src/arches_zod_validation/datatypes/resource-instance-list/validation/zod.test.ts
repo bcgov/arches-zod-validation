@@ -8,7 +8,7 @@ import type {
     ResourceInstanceListValue,
     ResourceInstanceReference,
     ResourceInstanceListOption,
-} from "@/arches_component_lab/datatypes/resource-instance-list/types.ts";
+} from "@/arches_vue_components/datatypes/resource-instance-list/types.ts";
 
 // Properly formatted reference objects matching ResourceInstanceReferenceSchema
 const validRef = (overrides: Partial<ResourceInstanceReference> = {}) => ({

@@ -8,7 +8,7 @@ import {
 import type {
     ConceptListValue,
     CollectionItem,
-} from "@/arches_component_lab/datatypes/concept-list/types.ts";
+} from "@/arches_vue_components/datatypes/concept-list/types.ts";
 
 // A helper to produce valid UUID v4-like strings for tests.
 const uuid1 = "3c144c58-3e36-4f1f-965f-2c88f18c2a0d";

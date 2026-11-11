@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     # "silk",
     "rest_framework",
     "drf_spectacular",
+    "arches_vue_components",
     "arches_zod_validation",  # Ensure the project is listed before any other arches applications
 )
 

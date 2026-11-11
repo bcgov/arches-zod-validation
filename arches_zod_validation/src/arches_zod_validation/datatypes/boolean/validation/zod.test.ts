@@ -1,7 +1,7 @@
 // datatypes/boolean/validation/zod.test.ts
 import { describe, it, expect } from "vitest";
 import { BooleanValueSchema, BooleanValueRequiredSchema } from "./zod";
-import type { BooleanValue } from "@/arches_component_lab/datatypes/boolean/types.ts";
+import type { BooleanValue } from "@/arches_vue_components/datatypes/boolean/types.ts";
 
 const validBoolean = (overrides: Partial<BooleanValue> = {}) => ({
     display_value: "Yes",

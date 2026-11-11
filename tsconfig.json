@@ -15,14 +15,22 @@
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "types": [
-            "vitest/globals"
-        ],
-        "allowImportingTsExtensions": true
+        "types": ["vitest/globals"],
+        "allowImportingTsExtensions": true,
+
+        "baseUrl": ".",
+        "paths": {
+            "geojson": ["node_modules/@types/geojson/index.d.ts"],
+            "@/arches/*": ["node_modules/arches/arches/app/src/arches/*"],
+            "@/arches_zod_validation/*": [
+                "arches_zod_validation/src/arches_zod_validation/*"
+            ],
+            "@/arches_vue_components/*": [
+                "node_modules/arches-vue-components/arches_vue_components/src/arches_vue_components/*"
+            ],
+            "uuidesm": ["node_modules/uuid/dist"],
+            "*": ["node_modules/*"]
+        }
     },
-    "exclude": [
-        "**/*.test.ts",
-        "**/build/**",
-        "**/staticfiles/**",
-    ]
+    "exclude": ["**/*.test.ts", "**/build/**", "**/staticfiles/**"]
 }

@@ -1,13 +1,13 @@
 import type {
-    FileListValue,
+    FileListAliasedNodeData,
     FileReference as CoreFileReference,
-} from "@/arches_component_lab/datatypes/file-list/types.ts";
+} from "@/arches_vue_components/datatypes/file-list/types.ts";
 
 export type FileWithContext = File & CoreFileReference;
 
 // This should probably be in arches-component-lab, or the FileReference there should
 // potentially be modified
-export type FileReference = FileListValue & {
+export type FileReference = FileListAliasedNodeData & {
     file?: FileWithContext;
     file_id: string;
     node_id?: string;

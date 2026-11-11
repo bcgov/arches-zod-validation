@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
-import type { LanguageValue } from "@/arches_component_lab/datatypes/string/types.ts";
-import type { GeoJSONFeatureCollectionValue } from "@/arches_component_lab/datatypes/geojson-feature-collection/types.ts";
-import type { AliasedNodeData } from "@/arches_component_lab/types.ts";
+import type { LanguageValue } from "@/arches_vue_components/datatypes/string/types.ts";
+import type { GeoJSONFeatureCollectionAliasedNodeData } from "@/arches_vue_components/datatypes/geojson-feature-collection/types.ts";
+import type { AliasedNodeData } from "@/arches_vue_components/types.ts";
 import type { FormInstance } from "@primevue/forms";
 import type { GenericZodObjectType } from "@/arches_zod_validation/validation-utils.ts";
 
@@ -91,13 +91,14 @@ export const falseBooleanValue = function () {
     };
 };
 
-export const blankGeoJSONValue = function (): GeoJSONFeatureCollectionValue {
-    return {
-        display_value: "",
-        node_value: null,
-        details: [] as never[],
-    } satisfies GeoJSONFeatureCollectionValue;
-};
+export const blankGeoJSONValue =
+    function (): GeoJSONFeatureCollectionAliasedNodeData {
+        return {
+            display_value: "",
+            node_value: null,
+            details: [] as never[],
+        } satisfies GeoJSONFeatureCollectionAliasedNodeData;
+    };
 
 export const currentDateValue = function () {
     return {

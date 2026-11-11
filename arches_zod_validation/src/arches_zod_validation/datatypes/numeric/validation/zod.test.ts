@@ -1,7 +1,7 @@
 // datatypes/number/validation/zod.test.ts
 import { describe, it, expect } from "vitest";
 import { NumberValueSchema, NumberValueRequiredSchema } from "./zod";
-import type { NumberValue } from "@/arches_component_lab/datatypes/number/types.ts";
+import type { NumberValue } from "@/arches_vue_components/datatypes/number/types.ts";
 
 const validNumber = (overrides: Partial<NumberValue> = {}) => ({
     display_value: "42",

@@ -1,6 +1,11 @@
-import * as z from "zod";
-
-export type GenericZodObjectType = typeof z.object;
+// import * as z from "zod";
+export type GenericZodObjectType = {
+    shape?: Record<
+        string,
+        { safeParse: (val: unknown) => { success: boolean } }
+    >;
+};
+// export type GenericZodObjectType = typeof z.object;
 export type FieldError = { type?: string; message: string };
 type FlattenErrors = Record<string, FieldError[]>;
 

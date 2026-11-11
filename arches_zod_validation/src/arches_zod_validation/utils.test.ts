@@ -3,7 +3,7 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import type { FormInstance } from "@primevue/forms";
 import type { GenericZodObjectType } from "@/arches_zod_validation/validation-utils.ts";
-import type { AliasedNodeData } from "@/arches_component_lab/types.ts";
+import type { AliasedNodeData } from "@/arches_vue_components/types.ts";
 import {
     formatPid,
     blankStringValue,

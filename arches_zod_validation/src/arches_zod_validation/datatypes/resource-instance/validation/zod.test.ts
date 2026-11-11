@@ -7,7 +7,7 @@ import {
 import type {
     ResourceInstanceValue,
     ResourceInstanceReference,
-} from "@/arches_component_lab/datatypes/resource-instance/types.ts";
+} from "@/arches_vue_components/datatypes/resource-instance/types.ts";
 
 // fixed UUIDs for repeatable tests
 const uuidA = "3c144c58-3e36-4f1f-965f-2c88f18c2a0d";

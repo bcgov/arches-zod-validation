@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { FileListValueSchema } from "@/bcgov_arches_common/datatypes/file-list/validation/zod";
 import { MimeType } from "@/bcgov_arches_common/datatypes/file-list/validation/constants";
-import type { FileReference } from "@/arches_component_lab/datatypes/file-list/types.ts";
+import type { FileReference } from "@/arches_vue_components/datatypes/file-list/types.ts";
 
 // Fixed UUIDs for repeatable tests
 const uuidA = "3c144c58-3e36-4f1f-965f-2c88f18c2a0d";

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { DateValueSchema, DateValueRequiredSchema } from "./zod";
-import type { DateValue } from "@/arches_component_lab/datatypes/date/types.ts";
+import type { DateValue } from "@/arches_vue_components/datatypes/date/types.ts";
 
 // a valid ISO date string for tests
 const ISO_DATE = "2024-08-19";

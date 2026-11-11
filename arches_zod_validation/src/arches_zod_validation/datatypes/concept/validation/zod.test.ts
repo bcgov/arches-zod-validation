@@ -3,7 +3,7 @@ import { ConceptValueSchema, ConceptValueRequiredSchema } from "./zod";
 import type {
     ConceptValue,
     CollectionItem,
-} from "@/arches_component_lab/datatypes/concept/types.ts";
+} from "@/arches_vue_components/datatypes/concept/types.ts";
 
 // A helper to produce a valid UUID v4-like string for tests.
 const uuid = "3c144c58-3e36-4f1f-965f-2c88f18c2a0d";

@@ -4,7 +4,7 @@ import {
     convertNbspToSpaces,
     htmlToPlainText,
 } from "./utils.ts";
-import type { StringValue } from "@/arches_component_lab/datatypes/string/types.ts";
+import type { StringValue } from "@/arches_vue_components/datatypes/string/types.ts";
 
 function makeStringValue(
     nodeValues: Record<string, string>,
