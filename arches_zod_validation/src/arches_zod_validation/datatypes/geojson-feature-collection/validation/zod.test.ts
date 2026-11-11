@@ -23,7 +23,7 @@ import {
     FeatureCollectionWithNonEmptyLinesSchema,
     FeatureCollectionWithNonEmptyPolygonsSchema,
     FeatureCollectionWithNonEmptyGeometriesSchema,
-} from "@/bcgov_arches_common/datatypes/geojson-feature-collection/validation/zod"; // adjust the import path as needed
+} from "@/arches_zod_validation/datatypes/geojson-feature-collection/validation/zod"; // adjust the import path as needed
 
 // Any other imports you might need (like Jest or testing libraries)
 

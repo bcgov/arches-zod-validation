@@ -5,7 +5,6 @@ import type { FormInstance } from "@primevue/forms";
 import type { GenericZodObjectType } from "@/arches_zod_validation/validation-utils.ts";
 import type { AliasedNodeData } from "@/arches_vue_components/types.ts";
 import {
-    formatPid,
     blankStringValue,
     blankResourceInstanceValue,
     blankResourceInstanceListValue,
@@ -21,32 +20,6 @@ import {
     isValid,
     updateModelValue,
 } from "./utils.ts";
-
-// ---------------------------------------------------------------------------
-// formatPid
-// ---------------------------------------------------------------------------
-
-describe("formatPid", () => {
-    it("formats a 9-digit number with dashes every 3 digits", () => {
-        expect(formatPid(123456789)).toBe("123-456-789");
-    });
-
-    it("zero-pads numbers shorter than 9 digits", () => {
-        expect(formatPid(1)).toBe("000-000-001");
-        expect(formatPid(12345)).toBe("000-012-345");
-    });
-
-    it("formats zero as all-zero segments", () => {
-        expect(formatPid(0)).toBe("000-000-000");
-    });
-
-    it("returns null for null or undefined input", () => {
-        // @ts-expect-error -- testing with null which is not a valid number argument
-        expect(formatPid(null)).toBeNull();
-        // @ts-expect-error -- testing with undefined which is not a valid number argument
-        expect(formatPid(undefined)).toBeNull();
-    });
-});
 
 // ---------------------------------------------------------------------------
 // blank value factories

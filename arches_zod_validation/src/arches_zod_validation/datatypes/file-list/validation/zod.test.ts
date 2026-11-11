@@ -1,7 +1,7 @@
 // zod.file-list.test.ts
 import { describe, it, expect } from "vitest";
-import { FileListValueSchema } from "@/bcgov_arches_common/datatypes/file-list/validation/zod";
-import { MimeType } from "@/bcgov_arches_common/datatypes/file-list/validation/constants";
+import { FileListValueSchema } from "@/arches_zod_validation/datatypes/file-list/validation/zod";
+import { MimeType } from "@/arches_zod_validation/datatypes/file-list/validation/constants.ts";
 import type { FileReference } from "@/arches_vue_components/datatypes/file-list/types.ts";
 
 // Fixed UUIDs for repeatable tests

@@ -10,7 +10,7 @@ export const formatFilenameUrl = (
     const files = imageData?.node_value;
     return files && files.length > 0
         ? `<a href="${getFileUrl(files[0].url)}" target="${files[0].file_id}">${files[0].name}</a>`
-        : "<span class='error'>Invalid URL</span>";
+        : "";
 };
 
 // This ensures that file URLs include any URL prefix when behind a reverse proxy
