@@ -40,5 +40,4 @@ dev = [
     "sst",
 ]
 
-[tool.setuptools]
-packages = ["arches_zod_validation"]
+[tool.setuptools.packages.find]
