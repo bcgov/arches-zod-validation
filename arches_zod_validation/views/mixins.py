@@ -1,4 +1,4 @@
-"""Shared view mixins and serializer bases for BCAP resource APIs."""
+"""Shared view mixins and serializer bases for resource APIs."""
 
 from drf_spectacular.utils import extend_schema_field, extend_schema_serializer
 from rest_framework.authentication import SessionAuthentication
@@ -10,7 +10,7 @@ from arches_zod_validation.schema import ArchesTileAutoSchema
 
 
 @extend_schema_serializer(description="")
-class BCAPResourceSerializer(ArchesResourceSerializer):
+class AppResourceSerializer(ArchesResourceSerializer):
     """Base for the per-graph resource serializers; subclasses set
     Meta.graph_slug. Re-declares get_graph_has_different_publication only to
     annotate its bool return type for the OpenAPI generator."""
@@ -28,7 +28,7 @@ class BCAPResourceSerializer(ArchesResourceSerializer):
 
 
 class ArchesResourceViewMixin:
-    """Auth, schema, and the swagger_fake_view serializer fix shared by the BCAP
+    """Auth, schema, and the swagger_fake_view serializer fix shared by App
     resource APIs. Must precede the DRF generic view in the MRO so its
     get_serializer wins; each view supplies its own serializer_class."""
 
