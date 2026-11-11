@@ -1,4 +1,4 @@
-"""Custom drf-spectacular AutoSchema subclasses for bcap views."""
+"""Custom drf-spectacular AutoSchema subclasses for App-specific views."""
 
 import logging
 
