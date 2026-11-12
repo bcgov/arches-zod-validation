@@ -8,7 +8,13 @@ from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from drf_spectacular.openapi import AutoSchema
 from rest_framework import serializers
 
-from arches.app.models.models import CardModel, CardXNodeXWidget, GraphModel, Node, NodeGroup
+from arches.app.models.models import (
+    CardModel,
+    CardXNodeXWidget,
+    GraphModel,
+    Node,
+    NodeGroup,
+)
 
 from arches_querysets.rest_framework.field_mixins import NodeValueMixin
 from arches_querysets.rest_framework.serializers import (
@@ -78,9 +84,11 @@ def _build_per_graph_sortorders():
     be mixed in.
     """
     per_graph = {}
-    for graph_pk, slug in GraphModel.objects.filter(
-        source_identifier=None
-    ).exclude(slug=None).values_list("pk", "slug"):
+    for graph_pk, slug in (
+        GraphModel.objects.filter(source_identifier=None)
+        .exclude(slug=None)
+        .values_list("pk", "slug")
+    ):
 
         # nodegroup_id → alias of that nodegroup's root node (root node: pk == nodegroup_id)
         ng_alias = dict(
@@ -99,16 +107,16 @@ def _build_per_graph_sortorders():
 
         # nodegroup_id → CardModel.sortorder (source cards only)
         card_so = dict(
-            CardModel.objects
-            .filter(graph_id=graph_pk, source_identifier=None)
-            .values_list("nodegroup_id", "sortorder")
+            CardModel.objects.filter(
+                graph_id=graph_pk, source_identifier=None
+            ).values_list("nodegroup_id", "sortorder")
         )
 
         # node_id → CardXNodeXWidget.sortorder (source widgets only)
         widget_so = dict(
-            CardXNodeXWidget.objects
-            .filter(card__graph_id=graph_pk, source_identifier=None)
-            .values_list("node_id", "sortorder")
+            CardXNodeXWidget.objects.filter(
+                card__graph_id=graph_pk, source_identifier=None
+            ).values_list("node_id", "sortorder")
         )
 
         # node_id → (alias, nodegroup_id) for all aliased nodes in this graph
