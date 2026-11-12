@@ -37,11 +37,9 @@ DATABASES = {
         "AUTOCOMMIT": True,
         "CONN_MAX_AGE": 0,
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "HOST": "localhost",
+        "HOST": os.environ.get("PGHOST", "localhost"),
         "NAME": "arches_zod_validation",
-        "OPTIONS": {
-            "options": "-c cursor_tuple_fraction=1",
-        },
+        "OPTIONS": {},
         "PASSWORD": "postgis",
         "PORT": "5432",
         "POSTGIS_TEMPLATE": "template_postgis",
@@ -70,6 +68,15 @@ SILENCED_SYSTEM_CHECKS.append(
     "arches.W001",  # Cache backend does not support rate-limiting
 )
 
+CELERY_BROKER_URL = ""
+
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+# localhost may not work cross networks in docker
 ELASTICSEARCH_HOSTS = [
-    {"scheme": "http", "host": "localhost", "port": ELASTICSEARCH_HTTP_PORT}
+    {
+        "scheme": os.environ.get("ES_SCHEME", "http"),
+        "host": os.environ.get("ES_HOST", "localhost"),
+        "port": int(os.environ.get("ES_PORT", ELASTICSEARCH_HTTP_PORT)),
+    }
 ]

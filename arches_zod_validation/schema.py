@@ -2,11 +2,13 @@
 
 import logging
 
+from django.db import models
+
 from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from drf_spectacular.openapi import AutoSchema
 from rest_framework import serializers
 
-from arches.app.models.models import CardModel, Node
+from arches.app.models.models import CardModel, CardXNodeXWidget, GraphModel, Node, NodeGroup
 
 from arches_querysets.rest_framework.field_mixins import NodeValueMixin
 from arches_querysets.rest_framework.serializers import (
@@ -56,24 +58,137 @@ def _sort_properties_in_place(node, sortorder):
             _sort_properties_in_place(child, sortorder)
 
 
+def _build_per_graph_sortorders():
+    """Return {graph_slug: {context: {child_alias: sortorder}}}.
+
+    context is the alias of the parent nodegroup (None = top-level cards).
+    Within each context:
+      - Child nodegroup root nodes are keyed by their alias with
+        CardModel.sortorder as value (card order relative to siblings).
+      - Leaf nodes are keyed by their alias with CardXNodeXWidget.sortorder
+        as value (position within their card).
+
+    This avoids the collision that arises from a flat alias→sortorder map:
+    the same alias can be a child-card name in one context and a leaf-node
+    name in another (e.g. site_images is both a child card of
+    related_documents and a file-list node inside the site_images card).
+
+    Only source graphs and source cards/widgets (source_identifier=None) are
+    considered; published copies share aliases with their sources and must not
+    be mixed in.
+    """
+    per_graph = {}
+    for graph_pk, slug in GraphModel.objects.filter(
+        source_identifier=None
+    ).exclude(slug=None).values_list("pk", "slug"):
+
+        # nodegroup_id → alias of that nodegroup's root node (root node: pk == nodegroup_id)
+        ng_alias = dict(
+            Node.objects.filter(graph_id=graph_pk)
+            .exclude(alias=None)
+            .filter(pk=models.F("nodegroup_id"))
+            .values_list("pk", "alias")
+        )
+
+        # nodegroup_id → parent_nodegroup_id
+        ng_parent = dict(
+            NodeGroup.objects.filter(
+                pk__in=Node.objects.filter(graph_id=graph_pk).values("nodegroup_id")
+            ).values_list("pk", "parentnodegroup_id")
+        )
+
+        # nodegroup_id → CardModel.sortorder (source cards only)
+        card_so = dict(
+            CardModel.objects
+            .filter(graph_id=graph_pk, source_identifier=None)
+            .values_list("nodegroup_id", "sortorder")
+        )
+
+        # node_id → CardXNodeXWidget.sortorder (source widgets only)
+        widget_so = dict(
+            CardXNodeXWidget.objects
+            .filter(card__graph_id=graph_pk, source_identifier=None)
+            .values_list("node_id", "sortorder")
+        )
+
+        # node_id → (alias, nodegroup_id) for all aliased nodes in this graph
+        node_info = {
+            pk: (alias, ng_id)
+            for alias, pk, ng_id in Node.objects.filter(graph_id=graph_pk)
+            .exclude(alias=None)
+            .values_list("alias", "pk", "nodegroup_id")
+        }
+
+        contexts = {}
+
+        # Child cards: each nodegroup root node is sorted by its card's sortorder
+        # within its parent nodegroup's context (None = top-level).
+        for ng_id, so in card_so.items():
+            alias = ng_alias.get(ng_id)
+            if not alias:
+                continue
+            parent_ng_id = ng_parent.get(ng_id)
+            parent_alias = ng_alias.get(parent_ng_id) if parent_ng_id else None
+            contexts.setdefault(parent_alias, {})[alias] = so
+
+        # All nodes with widgets (including each nodegroup's root node) are
+        # sorted by widget sortorder within their own nodegroup's context.
+        # Root nodes also appear in the parent context via card_so above;
+        # including them here too is what makes all_keys_are_nodes pass in
+        # _sort_properties_in_place for the root node's own tile schema.
+        for node_pk, so in widget_so.items():
+            info = node_info.get(node_pk)
+            if not info:
+                continue
+            alias, ng_id = info
+            ng_root_alias = ng_alias.get(ng_id)
+            if ng_root_alias:
+                contexts.setdefault(ng_root_alias, {})[alias] = so
+
+        per_graph[slug] = contexts
+    return per_graph
+
+
+def _schema_graph_slug(schema_name, slugs_desc):
+    """Return the graph slug whose title-cased prefix matches schema_name, or None.
+
+    slugs_desc must be sorted longest-first so a slug like 'site_visit' is
+    checked before the shorter 'site', preventing false prefix matches.
+    """
+    for slug in slugs_desc:
+        prefix = slug.title()
+        if schema_name == prefix or schema_name.startswith(prefix + "_"):
+            return slug
+    return None
+
+
+def _extract_context_alias(schema_name, slug, known_contexts):
+    """Return the nodegroup alias that schema_name represents, or None.
+
+    Tile schemas are named {slug}_{nodegroup_alias}_Aliased_Data (title-cased).
+    Resource-level schemas use a suffix like _Resource_Aliased_Data which does
+    not correspond to any real nodegroup; those map to context None (top-level).
+    """
+    prefix = slug.title() + "_"
+    suffix = "_Aliased_Data"
+    if not (schema_name.startswith(prefix) and schema_name.endswith(suffix)):
+        return None
+    middle = schema_name[len(prefix) : -len(suffix)]
+    alias = middle.lower()
+    return alias if alias in known_contexts else None
+
+
 def sort_generated_schema_properties(result, generator, request, public):
-    """Hook: order tile-schema properties by node sortorder for stable diffs."""
-    # alias -> Node.sortorder, for every node in every graph.
-    sortorder = dict(
-        Node.objects.exclude(alias=None)
-        .order_by("alias", "sortorder")
-        .values_list("alias", "sortorder")
-    )
-    # Make order deterministic for drift check
-    card_so = dict(CardModel.objects.values_list("nodegroup_id", "sortorder"))
-    sortorder.update(
-        (alias, card_so[pk])
-        for alias, pk in Node.objects.filter(pk__in=card_so)
-        .exclude(alias=None)
-        .values_list("alias", "pk")
-    )
-    for schema in result.get("components", {}).get("schemas", {}).values():
-        _sort_properties_in_place(schema, sortorder)
+    """Hook: order tile-schema properties by card/widget sortorder for stable diffs."""
+    per_graph = _build_per_graph_sortorders()
+    slugs_desc = sorted(per_graph, key=len, reverse=True)
+    for schema_name, schema in result.get("components", {}).get("schemas", {}).items():
+        slug = _schema_graph_slug(schema_name, slugs_desc)
+        if slug is None:
+            continue
+        contexts = per_graph[slug]
+        context_alias = _extract_context_alias(schema_name, slug, contexts)
+        _sort_properties_in_place(schema, contexts.get(context_alias, {}))
     return result
 
 
