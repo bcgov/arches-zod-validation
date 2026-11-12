@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     "drf_spectacular",
     "arches_vue_components",
     "arches_zod_validation",  # Ensure the project is listed before any other arches applications
+    "arches_querysets",
 )
 
 # Placing this last ensures any templates and modules provided by
