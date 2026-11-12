@@ -7,8 +7,6 @@ inputs:
   project-name:
     description: 'String denoting the name of the project'
     required: true
-  secrets:
-    description: 'Secrets from main.yml as JSON'
 runs:
   using: 'composite'
   steps:
@@ -42,8 +40,6 @@ runs:
 
     - name: Install Arches applications
       uses: ./.github/actions/install-arches-applications
-      with:
-        secrets: ${{ inputs.secrets }}
 
     - name: Install frontend dependencies
       run: |
