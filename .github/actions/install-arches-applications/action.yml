@@ -1,8 +1,5 @@
 name: 'Install Arches Applications'
 description: 'Manually edit this file to install all Arches Applications declared in settings.py, but not declared in `pyproject.toml`'
-inputs: 
-  secrets:
-    description: 'Secrets from main.yml as JSON'
 runs:
   using: 'composite'
   steps:

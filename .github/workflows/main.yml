@@ -5,6 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build_target_branch:
     runs-on: ubuntu-24.04
@@ -43,7 +46,6 @@ jobs:
       - name: Build and test branch
         uses: ./.github/actions/build-and-test-branch
         with:
-          secrets: ${{ toJSON(secrets) }}
           project-name: 'arches_zod_validation'
           branch-type: 'target'
 
@@ -84,7 +86,6 @@ jobs:
       - name: Build and test branch
         uses: ./.github/actions/build-and-test-branch
         with:
-          secrets: ${{ toJSON(secrets) }}
           project-name: 'arches_zod_validation'
           branch-type: 'feature'
 
